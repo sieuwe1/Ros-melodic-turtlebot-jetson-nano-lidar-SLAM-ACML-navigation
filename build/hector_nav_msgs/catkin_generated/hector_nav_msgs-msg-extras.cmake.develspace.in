@@ -1,0 +1,2 @@
+set(hector_nav_msgs_MESSAGE_FILES "")
+set(hector_nav_msgs_SERVICE_FILES "/home/jetson/turtlebot_ws/src/hector_nav_msgs/srv/GetDistanceToObstacle.srv;/home/jetson/turtlebot_ws/src/hector_nav_msgs/srv/GetRecoveryInfo.srv;/home/jetson/turtlebot_ws/src/hector_nav_msgs/srv/GetRobotTrajectory.srv;/home/jetson/turtlebot_ws/src/hector_nav_msgs/srv/GetSearchPosition.srv;/home/jetson/turtlebot_ws/src/hector_nav_msgs/srv/GetNormal.srv")

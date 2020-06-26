@@ -1,0 +1,62 @@
+<launch>
+
+<!--robot launch-->  
+<arg name="urdf_file" default="$(find xacro)/xacro '$(find kobuki_description)/urdf/kobuki_standalone.urdf.xacro'"/>
+  <param name="robot_description" command="$(arg urdf_file)"/>
+
+  <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet mobile_base_nodelet_manager">
+    <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
+    <remap from="mobile_base/odom" to="odom"/>
+    <!-- Don't do this - force applications to use a velocity mux for redirection
+      <remap from="mobile_base/commands/velocity" to="cmd_vel"/>
+    -->
+    <remap from="mobile_base/enable" to="enable"/>
+    <remap from="mobile_base/disable" to="disable"/>
+    <remap from="mobile_base/joint_states" to="joint_states"/>
+  </node>
+
+  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator">
+    <rosparam command="load" file="$(find kobuki_node)/param/diagnostics.yaml"/>
+  </node>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="30.0"/>
+  </node>
+
+<!--lidar launch-->
+
+  <remap from="base_scan" to="scan"/>
+  <node name="rplidarNode"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
+  <param name="serial_port"         type="string" value="/dev/ttyUSB1"/>
+  <param name="serial_baudrate"     type="int"    value="115200"/><!--A1/A2 -->
+  <!--param name="serial_baudrate"     type="int"    value="256000"--><!--A3 -->
+  <param name="frame_id"            type="string" value="laser"/>
+  <param name="inverted"            type="bool"   value="false"/>
+  <param name="angle_compensate"    type="bool"   value="true"/>
+  </node>\>
+  <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="0 0.1 0.73 0 0 0 base_link laser 100" />
+
+
+  <!-- Map server -->
+  <node name="map_server" pkg="map_server" type="map_server" args="/home/jetson/FINAL_MAP_2.yaml" />
+
+  <!-- AMCL -->
+  <arg name="custom_amcl_launch_file" default="/home/jetson/turtlebot_ws/navigation/launch/includes/amcl/amcl.launch.xml"/>
+  <arg name="initial_pose_x" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
+  <arg name="initial_pose_y" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
+  <arg name="initial_pose_a" default="0.0"/>
+  <include file="$(arg custom_amcl_launch_file)">
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+
+  <!-- Move base-->
+  <arg name="custom_param_file" default="/home/jetson/turtlebot_ws/navigation/param/costmap_params.yaml"/>
+  <include file="/home/jetson/turtlebot_ws/navigation/launch/includes/move_base.launch.xml">
+    <arg name="custom_param_file" value="$(arg custom_param_file)"/>
+  </include>
+
+</launch>
+

@@ -1,0 +1,28 @@
+This is how to start the robot:
+
+source ~/.bashrc 
+
+base:
+roslaunch kobuki_node robot_with_tf.launch --screen
+
+lidar:
+roslaunch rplidar_ros rplidar.launch
+
+gmapping:
+rosrun gmapping slam_gmapping scan:=scan
+
+Create a map:
+roslaunch '/home/jetson/turtlebot_ws/navigation/launch/gmapping_demo.launch' 
+
+Navigation stack:
+roslaunch /home/jetson/turtlebot_ws/navigation/launch/amcl_demo.launch map_file:=/home/jetson/mu_map.yaml
+
+move robot:
+roslaunch /home/jetson/turtlebot_ws/src/kobuki_keyop/launch/keyop.launch
+
+save map:
+rosrun map_server map_saver -f mu_map
+
+connect remote pc:
+export ROS_MASTER_URI=http://192.168.2.24:11311
+

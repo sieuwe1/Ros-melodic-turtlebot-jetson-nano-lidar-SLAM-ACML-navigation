@@ -1,0 +1,8 @@
+prefix=/home/jetson/turtlebot_ws/devel
+
+Name: yocs_controllers
+Description: Description of yocs_controllers
+Version: 0.12.1
+Cflags: -I/home/jetson/turtlebot_ws/src/yocs_controllers/include
+Libs: -L${prefix}/lib 
+Requires: roscpp

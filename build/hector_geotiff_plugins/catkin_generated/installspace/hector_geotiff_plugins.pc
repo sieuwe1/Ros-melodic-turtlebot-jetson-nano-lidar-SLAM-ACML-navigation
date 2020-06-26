@@ -1,0 +1,8 @@
+prefix=/home/jetson/turtlebot_ws/install
+
+Name: hector_geotiff_plugins
+Description: Description of hector_geotiff_plugins
+Version: 0.4.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

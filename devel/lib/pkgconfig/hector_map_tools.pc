@@ -1,0 +1,8 @@
+prefix=/home/jetson/turtlebot_ws/devel
+
+Name: hector_map_tools
+Description: Description of hector_map_tools
+Version: 0.4.1
+Cflags: -I/home/jetson/turtlebot_ws/src/hector_map_tools/include -I/usr/include/eigen3
+Libs: -L${prefix}/lib 
+Requires: nav_msgs

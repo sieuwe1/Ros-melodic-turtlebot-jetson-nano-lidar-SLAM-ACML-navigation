@@ -1,0 +1,10 @@
+<launch>
+
+  <!-- Gmapping -->
+  <arg name="custom_gmapping_launch_file" default="/home/jetson/turtlebot_ws/navigation/launch/includes/gmapping/gmapping.launch.xml"/>
+  <include file="$(arg custom_gmapping_launch_file)"/>
+
+  <!-- Move base -->
+  <include file="/home/jetson/turtlebot_ws/navigation/launch/includes/move_base.launch.xml"/>
+
+</launch>
